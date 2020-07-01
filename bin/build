@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+echo "---> wkhtmltopdf Buildpack"
+
+# GET ARGS
+LAYERS_DIR="$1"
+
+# wkhtmltopdf layer
+WKHTMLTOPDF_LAYER="${LAYERS_DIR}/wkhtmltopdf"
+mkdir -p $WKHTMLTOPDF_LAYER
+
+# wkhtmltopdf URL
+WKHTMLTOPDF_URL="https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz"
+
+# Set the layer to be included in the final image
+echo "launch = true" > $WKHTMLTOPDF_LAYER.toml
+echo "build = true" >> $WKHTMLTOPDF_LAYER.toml
+
+# Download wkhtmltopdf to WKHTMLTOPDF_LAYER
+echo "---> Dowloading wkhtmltopdf from $WKHTMLTOPDF_URL"
+curl -L --silent --fail --retry 5 --retry-delay 1 --connect-timeout 3 --max-time 30 $WKHTMLTOPDF_URL | tar -Jx -C $WKHTMLTOPDF_LAYER
+
+echo "---> Moving files to $WKHTMLTOPDF_LAYER"
+mv $WKHTMLTOPDF_LAYER/wkhtmltox/* $WKHTMLTOPDF_LAYER/
+rm -r $WKHTMLTOPDF_LAYER/wkhtmltox/
+
+echo "---> Done"
