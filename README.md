@@ -2,6 +2,8 @@
 
 A Cloud Native Buildpack for [wkhtmltopdf](https://wkhtmltopdf.org/).
 
+This buildpack is mainly adapted from [heroku-buildpack-wkhtmltopdf](https://github.com/simplefractal/heroku-buildpack-wkhtmltopdf).
+
 ## Usage
 
 1- Clone the repository:
